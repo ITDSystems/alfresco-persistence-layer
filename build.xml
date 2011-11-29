@@ -1,0 +1,70 @@
+<project basedir="." default="dist-jar">
+
+	<!-- Allow override properties -->
+	<property file="${user.home}/.build.properties" />
+	<property file="build.properties" />
+
+	<!-- Property default values. May be overridden using above files or via command-line args -->
+	<property name="jar.name" value="alfresco-persistence-layer.jar" />
+	<property name="config.includes" value="**/*.*" />
+	<property name="build.classes.dir" value="shared/classes" />
+	<property name="build.lib.dir" value="webapps/alfresco/WEB-INF/lib" />
+	<property name="src" value="source/java" />
+
+	<!-- Additional property values. Generally should not be overridden -->
+	<property name="config.dir" value="${basedir}/config" />
+	<property name="build.dir" value="${basedir}/build" />
+	<property name="build.jar.dir" value="${build.dir}/jar" />
+	<property name="dist.dir" value="${build.dir}/dist" />
+
+	<!-- Main build target definitions -->
+
+	<!-- Clean out the build and distribution directories -->
+	<target name="clean" description="Clean out all build directories">
+		<delete dir="${build.dir}" />
+		<delete dir="${dist.dir}" />
+	</target>
+
+	<!-- Create required prerequisite directory structure -->
+	<target name="prepare" description="Create initial build structures">
+		<mkdir dir="${build.dir}" />
+		<mkdir dir="${dist.dir}" />
+		<mkdir dir="${build.jar.dir}" />
+	</target>
+
+	<target name="compile" depends="prepare" description="Compile the source " >
+		<javac srcdir="${src}" destdir="${build.jar.dir}">
+			<classpath>
+				<fileset dir="${tomcat.repo.home}/webapps/alfresco/WEB-INF/lib">
+					<include name="*.jar" />
+				</fileset>
+			</classpath>
+		</javac>
+	</target>
+
+	<target name="build-jar" description="Assemble configuration and resource files in a JAR file structure">
+		<!-- Copy configuration files, web scripts, etc. directly into the JAR so they appear on the 
+        classpath. -->
+		<copy todir="${build.jar.dir}" includeEmptyDirs="false">
+			<fileset dir="${config.dir}" includes="${config.includes}" />
+		</copy>
+		<mkdir dir="${build.jar.dir}/META-INF" />
+	</target>
+
+	<!-- Build the JAR file -->
+	<target name="dist-jar" depends="clean, prepare, compile, build-jar" description="Build a JAR file containing configuration and resource files">
+		<jar destfile="${dist.dir}/${jar.name}">
+			<fileset dir="${build.jar.dir}" />
+		</jar>
+	</target>
+
+	<!--
+        Copy JAR file into a local Tomcat instance.
+    -->
+	<target name="copy-tomcat-jar" depends="dist-jar" description="Copy JAR file into a local Tomcat instance">
+		<mkdir dir="${tomcat.repo.home}/${build.lib.dir}" />
+		<copy todir="${tomcat.repo.home}/${build.lib.dir}">
+			<fileset file="${dist.dir}/${jar.name}" />
+		</copy>
+	</target>
+</project>

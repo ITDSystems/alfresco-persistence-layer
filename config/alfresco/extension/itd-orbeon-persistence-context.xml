@@ -1,0 +1,44 @@
+<?xml version='1.0' encoding='UTF-8'?>
+
+<!DOCTYPE beans PUBLIC '-//SPRING//DTD BEAN//EN' 'http://www.springframework.org/dtd/spring-beans.dtd'>
+
+<beans>
+	<bean id="webscript.ru.itdsystems.alfresco.persistence.crud.get" class="ru.itdsystems.alfresco.persistence.CrudGet"
+		parent="webscript">
+		<property name="repository" ref="repositoryHelper" />
+		<property name="serviceRegistry" ref="ServiceRegistry" />
+		<property name="callbackClassName">
+			<value>${ru.itdsystems.alfresco.persistence.get.callback}</value>
+		</property>
+	</bean>
+	<bean id="webscript.ru.itdsystems.alfresco.persistence.crud.post" class="ru.itdsystems.alfresco.persistence.CrudPost"
+		parent="webscript">
+		<property name="repository" ref="repositoryHelper" />
+		<property name="serviceRegistry" ref="ServiceRegistry" />
+		<property name="callbackClassName">
+			<value>${ru.itdsystems.alfresco.persistence.post.callback}</value>
+		</property>		
+	</bean>	
+	<bean id="webscript.ru.itdsystems.alfresco.persistence.crud.put" class="ru.itdsystems.alfresco.persistence.CrudPut"
+		parent="webscript">
+		<property name="repository" ref="repositoryHelper" />
+		<property name="serviceRegistry" ref="ServiceRegistry" />
+		<property name="callbackClassName">
+			<value>${ru.itdsystems.alfresco.persistence.put.callback}</value>
+		</property>
+		<property name="mimetypeDetectorClassName">
+			<value>${ru.itdsystems.alfresco.persistence.put.detector}</value>
+		</property>
+		<property name="versionable">
+			<value>${ru.itdsystems.alfresco.persistence.put.versionable}</value>
+		</property>
+	</bean>	
+	<bean id="webscript.ru.itdsystems.alfresco.persistence.crud.delete" class="ru.itdsystems.alfresco.persistence.CrudDelete"
+		parent="webscript">
+		<property name="repository" ref="repositoryHelper" />
+		<property name="serviceRegistry" ref="ServiceRegistry" />
+		<property name="callbackClassName">
+			<value>${ru.itdsystems.alfresco.persistence.delete.callback}</value>
+		</property>
+	</bean>	
+</beans>

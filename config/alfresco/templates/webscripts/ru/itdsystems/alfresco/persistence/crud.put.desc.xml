@@ -1,0 +1,10 @@
+<webscript>
+  <shortname>Persistence Layer</shortname>
+  <description>Web script implementing Orbeon Forms Persistence Layer put request</description>
+  <url>/api/crud/{application_name}/{form_name}/data/{form_data_id}/{file_name}</url>
+  <url>/api/crud/{application_name}/{form_name}/form/{file_name}</url>
+  <authentication>user</authentication>
+  <transaction>required</transaction>
+  <format>argument</format>
+</webscript>
+
