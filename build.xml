@@ -7,7 +7,6 @@
 	<!-- Property default values. May be overridden using above files or via command-line args -->
 	<property name="jar.name" value="alfresco-persistence-layer.jar" />
 	<property name="config.includes" value="**/*.*" />
-	<property name="build.classes.dir" value="shared/classes" />
 	<property name="build.lib.dir" value="webapps/alfresco/WEB-INF/lib" />
 	<property name="src" value="source/java" />
 
