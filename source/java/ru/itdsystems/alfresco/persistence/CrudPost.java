@@ -199,7 +199,7 @@ public class CrudPost extends AbstractCrudWebScript {
 			rootElement.setAttribute("query", "");
 			resultXML.appendChild(rootElement);
 			DateFormat dateFormat = new SimpleDateFormat(
-					"yyyy-MM-dd'T'HH:mmZ");
+					"yyyy-MM-dd'T'HH:mm:ss.SSSZZZZ");
 			int skip = pageSize * (pageNumber - 1);
 			Integer found = 0;
 			Integer searchTotal = 0;
@@ -261,11 +261,16 @@ public class CrudPost extends AbstractCrudWebScript {
 							skip--;
 						else if (++found < pageSize) {
 							Element item = resultXML.createElement("document");
-							item.setAttribute("created", dateFormat
-									.format(fileInfo.getCreatedDate()));
-							item.setAttribute("modified", dateFormat
-									.format(fileInfo.getModifiedDate()));
-							item.setAttribute("name", fileInfo.getName());
+							String createdText = dateFormat.format( fileFolderService.
+									getFileInfo(nodeRef).getCreatedDate() );
+							item.setAttribute("created", createdText.substring(0, 26)
+											 + ":" + createdText.substring(26));
+							String modifiedText = dateFormat.format( fileFolderService.
+									getFileInfo(nodeRef).getModifiedDate() );
+							item.setAttribute("last-modified", modifiedText.substring(0, 26)
+											+ ":" + modifiedText.substring(26));
+							item.setAttribute("name", fileFolderService.
+									getFileInfo( assoc.getChildRef() ).getName() );
 							resultXML.getDocumentElement().appendChild(item);
 							Element detailsElement = resultXML
 									.createElement("details");
