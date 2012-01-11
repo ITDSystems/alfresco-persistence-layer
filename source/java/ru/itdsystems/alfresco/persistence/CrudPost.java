@@ -259,7 +259,7 @@ public class CrudPost extends AbstractCrudWebScript {
 						searchTotal++;
 						if (skip > 0)
 							skip--;
-						else if (++found < pageSize) {
+						else if (++found <= pageSize) {
 							Element item = resultXML.createElement("document");
 							String createdText = dateFormat.format( fileFolderService.
 									getFileInfo(nodeRef).getCreatedDate() );
