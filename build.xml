@@ -16,6 +16,18 @@
 	<property name="build.jar.dir" value="${build.dir}/jar" />
 	<property name="dist.dir" value="${build.dir}/dist" />
 
+	<condition property="build.debug" value="on">
+		<isset  property="debug" />
+	</condition>
+	<condition property="build.debuglevel" value="lines,vars,source">
+		<isset  property="debug" />
+	</condition>
+	<condition property="build.debug" value="off">
+		<not>
+			<isset  property="debug" />
+		</not>
+	</condition>
+
 	<!-- Main build target definitions -->
 
 	<!-- Clean out the build and distribution directories -->
@@ -32,7 +44,7 @@
 	</target>
 
 	<target name="compile" depends="prepare" description="Compile the source " >
-		<javac srcdir="${src}" destdir="${build.jar.dir}">
+		<javac srcdir="${src}" destdir="${build.jar.dir}" debug="${build.debug}" debuglevel="${build.debuglevel}">
 			<classpath>
 				<fileset dir="${tomcat.repo.home}/webapps/alfresco/WEB-INF/lib">
 					<include name="*.jar" />
