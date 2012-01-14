@@ -17,6 +17,7 @@
 package ru.itdsystems.alfresco.persistence;
 
 import java.io.InputStream;
+import java.util.List;
 
 import org.alfresco.repo.model.Repository;
 import org.alfresco.service.ServiceRegistry;
@@ -39,6 +40,6 @@ public abstract class AbstractContentTypeDetector {
 	}
 	
 	// returns QName of type that should be used
-	public abstract QName detectMimetype(String fileName, InputStream contents);
+	public abstract QName detectMimetype(List<String> pathElements, String fileName, InputStream contents);
 
 }

@@ -70,11 +70,9 @@ public class CrudDelete extends AbstractCrudWebScript {
 		try {
 			// resolve path to file and delete
 			FileInfo fileInfo = fileFolderService.resolveNamePath(nodeRef, pathElements);
-			if (callback != null)
-				callback.doBefore(pathElements, fileInfo.getNodeRef());
+			doBefore(pathElements, fileInfo.getNodeRef());
 			nodeService.deleteNode(fileInfo.getNodeRef());
-			if (callback != null)
-				callback.doAfter(pathElements, null);
+			doAfter(pathElements, null);
 		} catch (FileNotFoundException e) {
 			throw new WebScriptException(404, "Error occured while processing request", e);
 		}

@@ -61,8 +61,7 @@ public class CrudGet extends AbstractCrudWebScript {
 		Boolean emptyResponse = false;
 		try {
 			fileInfo = fileFolderService.resolveNamePath(nodeRef, pathElements);
-			if (callback != null)
-				callback.doBefore(pathElements, fileInfo.getNodeRef());
+			doBefore(pathElements, fileInfo.getNodeRef());
 		} catch (FileNotFoundException e) {
 			// return empty response
 			emptyResponse = true;

@@ -18,6 +18,7 @@ package ru.itdsystems.alfresco.persistence;
 
 import java.util.List;
 
+import org.alfresco.service.ServiceRegistry;
 import org.alfresco.service.cmr.repository.NodeRef;
 
 /**
@@ -28,11 +29,23 @@ import org.alfresco.service.cmr.repository.NodeRef;
  */
 
 abstract public class BaseCrudCallback {
-	public void doBefore(List<String> pathElements, NodeRef nodeRef) {
+	
+	protected ServiceRegistry serviceRegistry;
+	
+	public BaseCrudCallback() {
+	}
+	
+	public void setServiceRegistry(ServiceRegistry registry) {
+		serviceRegistry = registry;	
+	}
+	
+	public abstract void afterPropertiesSet() throws Exception;
+	
+	public void doBefore(NodeRef rootNodeRef, List<String> pathElements, NodeRef nodeRef) throws Exception {
 		// empty callback
 	}
 	
-	public void doAfter(List<String> pathElements, NodeRef nodeRef) {
+	public void doAfter(NodeRef rootNodeRef, List<String> pathElements, NodeRef nodeRef) throws Exception {
 		// empty callback		
 	}
 }

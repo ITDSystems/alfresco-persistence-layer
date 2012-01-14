@@ -16,6 +16,8 @@
  */
 package ru.itdsystems.alfresco.persistence;
 
+import java.util.List;
+
 import org.alfresco.repo.model.Repository;
 import org.alfresco.service.ServiceRegistry;
 import org.alfresco.service.cmr.model.FileFolderService;
@@ -68,8 +70,10 @@ public abstract class AbstractCrudWebScript extends AbstractWebScript
 		try {
 			Class<?> callbackClass = Class.forName(callbackClassName);
 			callback = (BaseCrudCallback) callbackClass.newInstance();
+			callback.setServiceRegistry(serviceRegistry);
+			callback.afterPropertiesSet();
 		} catch (ClassNotFoundException e) {
-			throw new Exception("Error occured while loading properties."+callbackClassName+"!!", e);
+			throw new Exception("Can't load callback class: "+callbackClassName, e);
 		}
 	}
 	
@@ -82,5 +86,29 @@ public abstract class AbstractCrudWebScript extends AbstractWebScript
 		NodeRef currentUser = personService.getPerson(currentUserName);
 		return repository.getUserHome(currentUser);
 	}
+	
+	// wrappers for callbacks
+	public void doBefore(List<String> pathElements, NodeRef nodeRef) throws WebScriptException{
+		if (callback != null)
+			try {
+				callback.doBefore(getRootNodeRef(), pathElements, nodeRef);
+			} catch (Exception e) {
+				// TODO
+				// decide what should we do if callback failed
+				throw new WebScriptException(500, "Error occured during callback execution.", e);
+			}
+	}
+	
+	public void doAfter(List<String> pathElements, NodeRef nodeRef) throws WebScriptException {
+		if (callback != null)
+			try {
+				callback.doAfter(getRootNodeRef(), pathElements, nodeRef);
+			} catch (Exception e) {
+				// TODO
+				// decide what should we do if callback failed
+				throw new WebScriptException(500, "Error occured during callback execution.", e);
+			}		
+	}
+
 
 }

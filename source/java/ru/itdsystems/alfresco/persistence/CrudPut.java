@@ -90,8 +90,10 @@ public class CrudPut extends AbstractCrudWebScript {
 		} else {
 			pathElements.add("form");
 		}
-		if (callback != null)
-			callback.doBefore(pathElements, null);
+		String fileName = templateVars.get("file_name");
+		pathElements.add(fileName);
+		doBefore(pathElements, null);
+		pathElements.remove(pathElements.size()-1);
 		// get current user's home folder
 		NodeRef currentNodeRef = getRootNodeRef();
 		// resolve path to file or create file if doesn't exist yet
@@ -106,12 +108,11 @@ public class CrudPut extends AbstractCrudWebScript {
 			} else
 				currentNodeRef = nodeRef;
 		}
-		String fileName = templateVars.get("file_name");
 		nodeRef = nodeService.getChildByName(currentNodeRef,
 				ContentModel.ASSOC_CONTAINS, fileName);
 		if (nodeRef == null) {
-			QName contentType = contentDetector.detectMimetype(fileName, req
-					.getContent().getInputStream());
+			QName contentType = contentDetector.detectMimetype(pathElements, fileName, req
+							.getContent().getInputStream());
 			nodeRef = fileFolderService.create(currentNodeRef, fileName,
 					contentType).getNodeRef();
 			if (versionable) {
@@ -137,7 +138,6 @@ public class CrudPut extends AbstractCrudWebScript {
 					VersionType.MINOR);
 			nodeRef = checkOutCheckInService.checkin(nodeRef, versionProperties);
 		}
-		if (callback != null)
-			callback.doAfter(pathElements, nodeRef);
+		doAfter(pathElements, nodeRef);
 	}
 }

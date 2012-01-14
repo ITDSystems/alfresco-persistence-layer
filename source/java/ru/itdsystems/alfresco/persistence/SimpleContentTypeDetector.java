@@ -17,18 +17,19 @@
 package ru.itdsystems.alfresco.persistence;
 
 import java.io.InputStream;
+import java.util.List;
 
 import org.alfresco.model.ContentModel;
 import org.alfresco.service.namespace.QName;
 
 /**
- * Simple content type detector that always returns QNane for cm:content
+ * Simple content type detector that always returns QName for cm:content
  * @author Alexey Ermakov
  */
 public class SimpleContentTypeDetector extends AbstractContentTypeDetector {
 
 	@Override
-	public QName detectMimetype(String fileName, InputStream contents) {
+	public QName detectMimetype(List<String> pathElements, String fileName, InputStream contents) {
 		return ContentModel.TYPE_CONTENT;
 	}
 }
