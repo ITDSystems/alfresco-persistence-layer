@@ -126,7 +126,8 @@ public class CrudPost extends AbstractCrudWebScript {
 		FileInfo fileInfo = null;
 		Integer totalForms = 0;
 		try {
-			fileInfo = fileFolderService.resolveNamePath(nodeRef, pathElements, false);
+//			fileInfo = fileFolderService.resolveNamePath(nodeRef, pathElements, false);
+			fileInfo = fileFolderService.resolveNamePath(nodeRef, pathElements);
 		} catch (FileNotFoundException e) {
 			// do nothing here
 		}
