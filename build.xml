@@ -30,6 +30,8 @@
 
 	<!-- Main build target definitions -->
 
+	<target name="deploy" depends="copy-tomcat-jar" />
+
 	<!-- Clean out the build and distribution directories -->
 	<target name="clean" description="Clean out all build directories">
 		<delete dir="${build.dir}" />
